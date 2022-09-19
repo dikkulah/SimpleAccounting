@@ -2,18 +2,16 @@ package com.example.application.views;
 
 import com.example.application.model.Token;
 import com.example.application.service.BackendService;
+import com.example.application.utility.CookieUtility;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.server.VaadinResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 @Route("")
@@ -23,7 +21,7 @@ import java.util.Objects;
 public class LoginView extends Composite<LoginOverlay> {
 
 
-    public LoginView(BackendService backendService) {
+    public LoginView(BackendService backendService, CookieUtility cookieUtility) {
         LoginOverlay loginOverlay = getContent();
         loginOverlay.setOpened(true);
         loginOverlay.setForgotPasswordButtonVisible(false);
@@ -43,17 +41,10 @@ public class LoginView extends Composite<LoginOverlay> {
                 loginOverlay.setVisible(true);
             } else {
                 Token successLogIn = loginResponse.getBody();
-                encryptTokenAndAddCookies(successLogIn);
+                cookieUtility.addCookies("token", Objects.requireNonNull(successLogIn).getToken());
                 UI.getCurrent().getPage().setLocation("/accounts");
             }
         });
-    }
-
-
-    private void encryptTokenAndAddCookies(Token successLogIn) {
-        HttpServletResponse cookies = (HttpServletResponse) VaadinResponse.getCurrent();
-        Cookie cookie = new Cookie("token", Objects.requireNonNull(successLogIn).getToken());
-        cookies.addCookie(cookie);
     }
 
 

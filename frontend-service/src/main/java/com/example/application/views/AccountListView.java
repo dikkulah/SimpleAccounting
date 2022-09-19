@@ -4,6 +4,7 @@ package com.example.application.views;
 import com.example.application.model.Account;
 import com.example.application.model.enums.Currency;
 import com.example.application.service.BackendService;
+import com.example.application.utility.CookieUtility;
 import com.github.appreciated.card.ClickableCard;
 import com.github.appreciated.card.action.ActionButton;
 import com.github.appreciated.card.action.Actions;
@@ -16,19 +17,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
-import com.vaadin.flow.server.VaadinRequest;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @PageTitle("Forex - Hesaplarım")
 @Route(value = "accounts", layout = MainLayout.class)
 public class AccountListView extends VerticalLayout {
 
-    public AccountListView(BackendService backendService) throws IOException {
+    public AccountListView(BackendService backendService, CookieUtility cookieUtility) {
         //gold image
         StreamResource goldImageResource = new StreamResource("gold.png", () -> getClass().getResourceAsStream("/META-INF/pictures/gold.png"));
         Image goldImage = new Image(goldImageResource, "gold.png");
@@ -41,49 +36,41 @@ public class AccountListView extends VerticalLayout {
         tlImage.setWidth("40px");
 
         // tokena ait hesapları çağırma
-        var accounts = backendService.getAccounts(getTokenFromCookies()).getBody();
+        var accounts = backendService.getAccounts(cookieUtility.getCookie("token")).getBody();
 
 
         // var olan hesapları cinsine göre component oluşturma döngüsü.
         assert accounts != null;
-        final String ACCOUNT_DETAILS = "Hesap detayları";
         final String ACCOUNT_NO = "Hesap no: ";
+
         for (Account account : accounts) {
             if (account.getCurrency() == Currency.DOLLAR) {
-                var card = new ClickableCard(
-                        new IconItem(new Icon(VaadinIcon.DOLLAR), "Dolar Hesabı", account.getAmount() + " $ \n" +ACCOUNT_NO  + account.getId())
-                        , new Actions(new ActionButton(ACCOUNT_DETAILS, event -> {
-
-                    UI.getCurrent().getPage().setLocation("/details");
-                })));
+                var card = new ClickableCard(new IconItem(new Icon(VaadinIcon.DOLLAR), "Dolar Hesabı", account.getAmount() + " $ \n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
                 card.setSizeFull();
                 add(card);
             } else if (account.getCurrency() == Currency.TL) {
-                var card = new ClickableCard(
-                        new IconItem(tlImage, "Lira Hesabı", account.getAmount() + " ₺\n" + ACCOUNT_NO + account.getId()),
-                        new Actions(new ActionButton(ACCOUNT_DETAILS, event -> {/* Handle Action*/})));
+                var card = new ClickableCard(new IconItem(tlImage, "Lira Hesabı", account.getAmount() + " ₺\n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
                 card.setSizeFull();
                 add(card);
             } else if (account.getCurrency() == Currency.EURO) {
-                var card = new ClickableCard(
-                        new IconItem(new Icon(VaadinIcon.EURO), "Euro Hesabı", account.getAmount() + " €\n" + ACCOUNT_NO + account.getId()),
-                        new Actions(new ActionButton(ACCOUNT_DETAILS, event -> {/* Handle Action*/})));
+                var card = new ClickableCard(new IconItem(new Icon(VaadinIcon.EURO), "Euro Hesabı", account.getAmount() + " €\n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
                 card.setSizeFull();
                 add(card);
             } else if (account.getCurrency() == Currency.GOLD) {
-                var card = new ClickableCard(
-                        new IconItem(goldImage, "Altın Hesabı", account.getAmount() + " gram\n" + ACCOUNT_NO + account.getId()),
-                        new Actions(new ActionButton(ACCOUNT_DETAILS, event -> {/* Handle Action*/})));
+                var card = new ClickableCard(new IconItem(goldImage, "Altın Hesabı", account.getAmount() + " gram\n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
                 card.setSizeFull();
                 add(card);
             }
         }
     }
 
-    private String getTokenFromCookies() {
-        HttpServletRequest request =
-                (HttpServletRequest) VaadinRequest.getCurrent();
-        Cookie foundCookie = Arrays.stream(request.getCookies()).filter(cookie -> Objects.equals(cookie.getName(), "token")).findFirst().orElseThrow();
-        return foundCookie.getValue();
+    @NotNull
+    private static ActionButton getActionButton(CookieUtility cookieUtility, Account account) {
+        return new ActionButton("Hesap detayları", event -> {
+            cookieUtility.addCookies("account", account.getId());
+            UI.getCurrent().getPage().setLocation("/details");
+        });
     }
+
+
 }
