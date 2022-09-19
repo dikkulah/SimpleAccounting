@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "activities")
-public class Activity extends AbstractEntity{
+public class Activity extends AbstractEntity {
 
     private LocalDateTime time;
     private BigDecimal amount;
@@ -23,7 +23,7 @@ public class Activity extends AbstractEntity{
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "account_id",nullable = false,updatable = false)
+    @JoinColumn(name = "account_id", nullable = false, updatable = false)
     private Account account;
 
 
