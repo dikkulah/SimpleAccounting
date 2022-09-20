@@ -26,13 +26,8 @@ public class AccountController {
     }
 
     @PostMapping("{currency}")
-    public ResponseEntity<String> addAccount(Authentication authentication, @PathVariable Currency currency) {
-        try {
-            accountService.addAccount(authentication.getName(), currency);
-            return ResponseEntity.ok().body("ACCOUNT CREATED");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<AccountDto> addAccount(Authentication authentication, @PathVariable Currency currency) {
+        return ResponseEntity.ok().body(accountService.addAccount(authentication.getName(),currency));
     }
 
 

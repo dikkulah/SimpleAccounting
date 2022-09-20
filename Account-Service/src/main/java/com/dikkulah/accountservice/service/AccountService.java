@@ -32,13 +32,13 @@ public class AccountService {
     }
 
 
-    public Account addAccount(String name, Currency currency) {
+    public AccountDto addAccount(String name, Currency currency) {
         User user = userRepository.findByUsername(name).orElseThrow(UserNotFoundException::new);
         Account account = new Account();
         account.setCurrency(currency);
         account.setUser(user);
         account.setAmount(BigDecimal.ZERO);
-        return accountRepository.save(account);
+        return modelMapper.map(accountRepository.save(account), AccountDto.class);
     }
 
     public List<ActivityDto> findAccountActivities(String name, UUID uuid, Integer count) {

@@ -81,12 +81,12 @@ public class BackendService {
 
     }
 
-    public ResponseEntity<String> createAccount(Currency currencyValue, String token) {
+    public ResponseEntity<Account> createAccount(Currency currencyValue, String token) {
         var response = client.post()
                 .uri("accounts/" + "/" + currencyValue)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Account.class)
                 .onErrorMap(e -> new RuntimeException(e.getCause())).block();
 
         return ResponseEntity.ok().body(response);
