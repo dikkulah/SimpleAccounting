@@ -2,6 +2,7 @@ package com.example.application.views;
 
 import com.example.application.model.Token;
 import com.example.application.service.BackendService;
+import com.example.application.utility.AES;
 import com.example.application.utility.CookieUtility;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -41,7 +42,7 @@ public class LoginView extends Composite<LoginOverlay> {
                 loginOverlay.setVisible(true);
             } else {
                 Token successLogIn = loginResponse.getBody();
-                cookieUtility.addCookies("token", Objects.requireNonNull(successLogIn).getToken());
+                cookieUtility.addCookies("token", AES.encrypt(Objects.requireNonNull(successLogIn).getToken(), AES.SECRET));
                 UI.getCurrent().getPage().setLocation("/accounts");
             }
         });

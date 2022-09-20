@@ -14,6 +14,8 @@ public class AES {
 
     private static SecretKeySpec secretKey;
     private static byte[] key;
+    public static final String SECRET = "finansalTeknolojiler";
+
 
     public static void setKey(final String myKey) {
         MessageDigest sha = null;

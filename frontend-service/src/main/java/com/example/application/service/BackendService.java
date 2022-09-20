@@ -4,6 +4,7 @@ package com.example.application.service;
 import com.example.application.model.Account;
 import com.example.application.model.Token;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -58,6 +59,22 @@ public class BackendService {
         assert response != null;
         List<Account> accounts = List.of(response);
         return new ResponseEntity<>(accounts, HttpStatus.OK);
+
+
+    }
+
+    //page yapısında veri almaya çalış
+    public ResponseEntity getAccountActivities(String token, UUID uuid, Integer count) {
+
+        var response = client.get()
+                .uri("accounts/" + uuid + "/" + count)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .retrieve()
+                .bodyToMono(Page.class)
+                .onErrorMap(e -> new RuntimeException(e.getCause())).block();
+
+        log.info(response.toString());
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
 
     }
