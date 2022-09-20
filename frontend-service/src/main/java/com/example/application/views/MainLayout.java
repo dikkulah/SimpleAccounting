@@ -21,6 +21,7 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+
     }
 
     private void addHeaderContent() {
@@ -47,7 +48,9 @@ public class MainLayout extends AppLayout {
         // AppNav is not yet an official component.
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
-        nav.addItem(new AppNavItem("Hesaplarım", AccountListView.class, "la la-file"));
+        nav.addItem(new AppNavItem("Hesaplarım", AccountListView.class, "la la-money-check"));
+        nav.addItem(new AppNavItem("Al-Sat İşlemleri", ExchangeView.class, "la la-exchange-alt"));
+
         return nav;
     }
 

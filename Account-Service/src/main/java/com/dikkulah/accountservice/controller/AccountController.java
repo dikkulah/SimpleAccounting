@@ -2,7 +2,7 @@ package com.dikkulah.accountservice.controller;
 
 import com.dikkulah.accountservice.dto.AccountDto;
 import com.dikkulah.accountservice.dto.ActivityDto;
-import com.dikkulah.accountservice.model.Account;
+import com.dikkulah.accountservice.model.enums.Currency;
 import com.dikkulah.accountservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,14 @@ public class AccountController {
         return ResponseEntity.ok().body(accountService.findAllAccountsByUsername(authentication.getName()));
     }
 
-    @PostMapping
-    public ResponseEntity<Account> addAccount(Authentication authentication, @RequestBody Account account) {
-        return ResponseEntity.ok().body(accountService.addAccount(authentication.getName(), account));
+    @PostMapping("{currency}")
+    public ResponseEntity<String> addAccount(Authentication authentication, @PathVariable Currency currency) {
+        try {
+            accountService.addAccount(authentication.getName(), currency);
+            return ResponseEntity.ok().body("ACCOUNT CREATED");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 

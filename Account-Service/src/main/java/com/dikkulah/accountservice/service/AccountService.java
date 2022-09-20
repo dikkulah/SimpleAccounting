@@ -4,6 +4,8 @@ import com.dikkulah.accountservice.dto.AccountDto;
 import com.dikkulah.accountservice.dto.ActivityDto;
 import com.dikkulah.accountservice.exception.UserNotFoundException;
 import com.dikkulah.accountservice.model.Account;
+import com.dikkulah.accountservice.model.User;
+import com.dikkulah.accountservice.model.enums.Currency;
 import com.dikkulah.accountservice.repository.AccountRepository;
 import com.dikkulah.accountservice.repository.ActivitiesRepository;
 import com.dikkulah.accountservice.repository.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,8 +32,12 @@ public class AccountService {
     }
 
 
-    public Account addAccount(String name, Account account) {
-        checkUser(name);
+    public Account addAccount(String name, Currency currency) {
+        User user = userRepository.findByUsername(name).orElseThrow(UserNotFoundException::new);
+        Account account = new Account();
+        account.setCurrency(currency);
+        account.setUser(user);
+        account.setAmount(BigDecimal.ZERO);
         return accountRepository.save(account);
     }
 

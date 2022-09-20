@@ -5,6 +5,7 @@ import com.example.application.model.enums.ActivityType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.ToString;
 
 import javax.annotation.Generated;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
     "description"
 })
 @Generated("jsonschema2pojo")
+@ToString
 public class Activity {
 
     @JsonProperty("id")

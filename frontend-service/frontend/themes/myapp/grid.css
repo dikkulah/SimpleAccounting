@@ -1,0 +1,9 @@
+.warn {
+    background-color: indianred;
+    color: white;
+}
+
+.ok {
+    color: white;
+    background-color: mediumseagreen;
+}

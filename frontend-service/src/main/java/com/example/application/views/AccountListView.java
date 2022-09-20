@@ -11,10 +11,14 @@ import com.github.appreciated.card.action.ActionButton;
 import com.github.appreciated.card.action.Actions;
 import com.github.appreciated.card.content.IconItem;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -29,6 +33,34 @@ public class AccountListView extends VerticalLayout {
         //gold image
         Image goldImage = getImage("gold.png", "/META-INF/pictures/gold.png");
         Image tlImage = getImage("tl.png", "/META-INF/pictures/tl.png");
+
+        Button createAccount = new Button("Hesap Aç");
+        createAccount.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        add(createAccount);
+        Dialog dialog = new Dialog();
+        dialog.setHeaderTitle("Hesap Aç");
+        VerticalLayout dialogLayout = new VerticalLayout();
+        Select<String> selectCurrency = new Select<>();
+        selectCurrency.setLabel("Para Birimi");
+        selectCurrency.setItems(Currency.TL.toString(), Currency.GOLD.toString(), Currency.EURO.toString(), Currency.DOLLAR.toString());
+        selectCurrency.setPlaceholder("Para Birimi seçiniz");
+        selectCurrency.setEmptySelectionAllowed(false);
+
+        dialogLayout.add(selectCurrency);
+        dialog.add(dialogLayout);
+        Button saveButton = new Button("Hesabı Aç");
+        saveButton.addClickListener(buttonClickEvent -> {
+            backendService.createAccount(Currency.valueOf(selectCurrency.getValue())
+                    , AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET)
+            ).getBody();
+            dialog.close();
+        });
+        Button cancelButton = new Button("Vazgeç", e -> dialog.close());
+        dialog.getFooter().add(cancelButton);
+        dialog.getFooter().add(saveButton);
+        createAccount.addClickListener(buttonClickEvent -> dialog.open());
+        add(dialog);
+
 
         // tokena ait hesapları çağırma
         var accounts = backendService.getAccounts(AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET)).getBody();
@@ -57,6 +89,7 @@ public class AccountListView extends VerticalLayout {
         }
     }
 
+
     private static ActionButton getActionButton(CookieUtility cookieUtility, Account account) {
         return new ActionButton("Hesap detayları", event -> {
             cookieUtility.addCookies("account", AES.encrypt(account.getId(), AES.SECRET));
@@ -65,8 +98,8 @@ public class AccountListView extends VerticalLayout {
     }
 
     private Image getImage(String name, String path) {
-        StreamResource tlImageResource = new StreamResource(name, () -> getClass().getResourceAsStream(path));
-        Image tlImage = new Image(tlImageResource, name);
+        StreamResource imageResource = new StreamResource(name, () -> getClass().getResourceAsStream(path));
+        Image tlImage = new Image(imageResource, name);
         tlImage.setHeight("40px");
         tlImage.setWidth("40px");
         return tlImage;

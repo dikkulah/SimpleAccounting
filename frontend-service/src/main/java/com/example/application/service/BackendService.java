@@ -2,9 +2,10 @@ package com.example.application.service;
 
 
 import com.example.application.model.Account;
+import com.example.application.model.Activity;
 import com.example.application.model.Token;
+import com.example.application.model.enums.Currency;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,18 +65,30 @@ public class BackendService {
     }
 
     //page yapısında veri almaya çalış
-    public ResponseEntity getAccountActivities(String token, UUID uuid, Integer count) {
+    public ResponseEntity<List<Activity>> getAccountActivities(String token, UUID uuid, Integer count) {
 
         var response = client.get()
                 .uri("accounts/" + uuid + "/" + count)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .retrieve()
-                .bodyToMono(Page.class)
+                .bodyToMono(Activity[].class)
+                .onErrorMap(e -> new RuntimeException(e.getCause())).block();
+        assert response != null;
+        List<Activity> activities = List.of(response);
+        log.info(activities.toString());
+        return new ResponseEntity<>(activities, HttpStatus.OK);
+
+
+    }
+
+    public ResponseEntity<String> createAccount(Currency currencyValue, String token) {
+        var response = client.post()
+                .uri("accounts/" + "/" + currencyValue)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .retrieve()
+                .bodyToMono(String.class)
                 .onErrorMap(e -> new RuntimeException(e.getCause())).block();
 
-        log.info(response.toString());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-
-
+        return ResponseEntity.ok().body(response);
     }
 }

@@ -20,13 +20,11 @@ public class Token {
 
 
     @JsonProperty("token")
-
     public String getToken() {
         return token;
     }
 
     @JsonProperty("token")
-
     public void setToken(String token) {
         this.token = token;
     }
