@@ -1,7 +1,7 @@
 
-package com.example.application.model;
+package com.dikkulah.exchangeservice.model;
 
-import com.example.application.model.enums.ActivityType;
+import com.dikkulah.exchangeservice.model.enums.ActivityType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

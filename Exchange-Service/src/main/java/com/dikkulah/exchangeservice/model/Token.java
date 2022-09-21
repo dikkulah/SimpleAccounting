@@ -1,4 +1,4 @@
-package com.example.application.model;
+package com.dikkulah.exchangeservice.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

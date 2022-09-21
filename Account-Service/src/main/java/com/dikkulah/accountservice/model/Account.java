@@ -19,6 +19,7 @@ public class Account extends AbstractEntity{
 
 
     @Enumerated(EnumType.STRING)
+    @Column(updatable = false)
     private Currency currency;
     private BigDecimal amount;
 
