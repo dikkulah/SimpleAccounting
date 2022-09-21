@@ -10,7 +10,7 @@ Kullanıcı Ekranları:
 
 Kullanıcı Giriş Ekranı: Kullanıcının bilgileri ile giriş yaptığı bölümdür. Sistemde yeni kullanıcı ekleme gibi bir yapı
 vakit alacağı için gerekli görülmemiştir. Birden fazla olacak şekilde daha önceden kaydettiğiniz kullanıcı bilgilerini
-kullanabilirsiniz. +++++
+kullanabilirsiniz.
 
 Hesap Bilgileri Ekranı: TL, Dolar, Euro ve altın cinsinden hesap durumlarının görüntülendiği ekrandır. Bu ve bundan
 sonraki ekranlara sadece 'authenticated' olan hesabın erişme yetkisi olmalıdır. ++++
