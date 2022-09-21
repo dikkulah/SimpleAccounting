@@ -5,7 +5,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lombok.extern.slf4j.Slf4j;
 
-@PageTitle("Forex - İşlem")
+@PageTitle("Forex - Exchange")
 @Route(value = "exchange", layout = MainLayout.class)
 @Slf4j
 public class ExchangeView extends VerticalLayout {

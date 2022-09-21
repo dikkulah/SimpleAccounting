@@ -3,8 +3,11 @@ package com.example.application.views;
 
 import com.example.application.components.appnav.AppNav;
 import com.example.application.components.appnav.AppNavItem;
+import com.example.application.utility.CookieUtility;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -12,16 +15,23 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
 
-    public MainLayout() {
+    @Autowired
+    CookieUtility cookieUtility;
+
+    public MainLayout(CookieUtility cookieUtility) {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
-
+        if (cookieUtility.getCookie("token").equals("") || cookieUtility.getCookie("token") == null
+        ) {
+            UI.getCurrent().getPage().setLocation("/login");
+        }
     }
 
     private void addHeaderContent() {
@@ -49,14 +59,22 @@ public class MainLayout extends AppLayout {
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
         nav.addItem(new AppNavItem("Hesaplarım", AccountListView.class, "la la-money-check"));
-        nav.addItem(new AppNavItem("Al-Sat İşlemleri", ExchangeView.class, "la la-exchange-alt"));
+        nav.addItem(new AppNavItem("Exchange", ExchangeView.class, "la la-exchange-alt"));
 
         return nav;
     }
 
     private Footer createFooter() {
+        Footer footer = new Footer();
+        Button button = new Button("Çıkış Yap");
+        button.addClickListener(e -> {
+            cookieUtility.addCookies("token", "");
+            cookieUtility.addCookies("account", "");
+            UI.getCurrent().getPage().setLocation("/login");
+        });
 
-        return new Footer();
+        footer.add(button);
+        return footer;
     }
 
     @Override

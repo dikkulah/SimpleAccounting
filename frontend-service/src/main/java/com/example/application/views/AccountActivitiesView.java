@@ -29,7 +29,7 @@ public class AccountActivitiesView extends VerticalLayout {
 
         Select<String> itemCountSelect = new Select<>();
         itemCountSelect.setLabel("Veri Sayısı");
-        itemCountSelect.setItems("5(Varsayılan)", "10", "25", "50");
+        itemCountSelect.setItems("5", "10", "25", "50");
         itemCountSelect.setPlaceholder("5");
         itemCountSelect.setEmptySelectionAllowed(false);
         itemCountSelect.addValueChangeListener(e -> {
