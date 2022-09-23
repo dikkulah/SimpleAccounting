@@ -2,4 +2,4 @@ server:
   port: 8081
 auth-token:
   header: x-api-key
-  value: ftufukufukft
+  value: finansalTeknolojiler

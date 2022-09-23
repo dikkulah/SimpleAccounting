@@ -4,7 +4,6 @@ import com.example.application.model.enums.Currency;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.ToString;
 
 import javax.annotation.Generated;
 import java.math.BigDecimal;
@@ -19,7 +18,7 @@ import java.util.List;
         "activities"
 })
 @Generated("jsonschema2pojo")
-@ToString
+
 public class Account {
 
     @JsonProperty("id")
@@ -72,4 +71,11 @@ public class Account {
     }
 
 
+    @Override
+    public String toString() {
+        return
+                "Birim: " + currency +
+                        "  Miktar: " + amount +
+                        "  HesapNo: " + id;
+    }
 }

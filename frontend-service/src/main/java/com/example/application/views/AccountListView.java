@@ -30,9 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AccountListView extends VerticalLayout {
 
     public AccountListView(BackendService backendService, CookieUtility cookieUtility) {
-        final String ACCOUNT_NO = "Hesap no: ";
-
-
         Button createAccount = new Button("Hesap Aç");
         createAccount.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(createAccount);
@@ -53,7 +50,7 @@ public class AccountListView extends VerticalLayout {
                     , AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET)
             ).getBody();
             assert response != null;
-            addAccountStrategy(cookieUtility, ACCOUNT_NO, response);
+            addAccountStrategy(cookieUtility, response);
             dialog.close();
         });
         Button cancelButton = new Button("Vazgeç", e -> dialog.close());
@@ -69,25 +66,25 @@ public class AccountListView extends VerticalLayout {
         assert accounts != null;
 
         for (Account account : accounts) {
-            addAccountStrategy(cookieUtility, ACCOUNT_NO, account);
+            addAccountStrategy(cookieUtility, account);
         }
     }
 
-    private void addAccountStrategy(CookieUtility cookieUtility, String ACCOUNT_NO, Account account) {
+    private void addAccountStrategy(CookieUtility cookieUtility, Account account) {
         if (account.getCurrency() == Currency.DOLLAR) {
-            var card = new ClickableCard(new IconItem(new Icon(VaadinIcon.DOLLAR), "Dolar Hesabı", account.getAmount() + " $ \n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
+            var card = new ClickableCard(new IconItem(new Icon(VaadinIcon.DOLLAR), "Dolar Hesabı", account.getAmount() + " $ \n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
             card.setSizeFull();
             add(card);
         } else if (account.getCurrency() == Currency.TL) {
-            var card = new ClickableCard(new IconItem(getImage("gold.png", "/META-INF/pictures/gold.png"), "Lira Hesabı", account.getAmount() + " ₺\n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
+            var card = new ClickableCard(new IconItem(getImage("gold.png", "/META-INF/pictures/gold.png"), "Lira Hesabı", account.getAmount() + " ₺\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
             card.setSizeFull();
             add(card);
         } else if (account.getCurrency() == Currency.EURO) {
-            var card = new ClickableCard(new IconItem(new Icon(VaadinIcon.EURO), "Euro Hesabı", account.getAmount() + " €\n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
+            var card = new ClickableCard(new IconItem(new Icon(VaadinIcon.EURO), "Euro Hesabı", account.getAmount() + " €\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
             card.setSizeFull();
             add(card);
         } else if (account.getCurrency() == Currency.GOLD) {
-            var card = new ClickableCard(new IconItem(getImage("tl.png", "/META-INF/pictures/tl.png"), "Altın Hesabı", account.getAmount() + " gram\n" + ACCOUNT_NO + account.getId()), new Actions(getActionButton(cookieUtility, account)));
+            var card = new ClickableCard(new IconItem(getImage("tl.png", "/META-INF/pictures/tl.png"), "Altın Hesabı", account.getAmount() + " gram\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
             card.setSizeFull();
             add(card);
         }
