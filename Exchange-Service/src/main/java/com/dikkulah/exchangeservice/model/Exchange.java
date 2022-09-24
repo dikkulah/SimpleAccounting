@@ -5,20 +5,22 @@ import com.dikkulah.exchangeservice.model.enums.Currency;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.ToString;
 
 import javax.annotation.Generated;
 import java.math.BigDecimal;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "currencyFrom",
-    "currencyTo",
-    "conversionMultiple",
-    "quantity",
-    "totalAmount"
+        "id",
+        "currencyFrom",
+        "currencyTo",
+        "conversionMultiple",
+        "quantity",
+        "totalAmount", "token", "accountFrom", "accountTo"
 })
 @Generated("jsonschema2pojo")
+@ToString
 public class Exchange {
 
     @JsonProperty("id")
@@ -33,7 +35,48 @@ public class Exchange {
     private BigDecimal quantity;
     @JsonProperty("totalAmount")
     private BigDecimal totalAmount;
+    @JsonProperty("token")
+    private String token;
+    @JsonProperty("accountFrom")
+    private Account accountFrom;
+    @JsonProperty("accountTo")
+    private Account accountTo;
 
+    @JsonProperty("token")
+
+    public String getToken() {
+        return token;
+    }
+
+    @JsonProperty("token")
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @JsonProperty("accountFrom")
+
+    public Account getAccountFrom() {
+        return accountFrom;
+    }
+
+    @JsonProperty("accountFrom")
+
+    public void setAccountFrom(Account accountFrom) {
+        this.accountFrom = accountFrom;
+    }
+
+    @JsonProperty("accountTo")
+
+    public Account getAccountTo() {
+        return accountTo;
+    }
+
+    @JsonProperty("accountTo")
+
+    public void setAccountTo(Account accountTo) {
+        this.accountTo = accountTo;
+    }
 
     @JsonProperty("id")
     public String getId() {

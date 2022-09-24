@@ -27,8 +27,18 @@ public class Exchange extends AbstractEntity{
 
     private BigDecimal totalAmount;
 
+    private String token;
+
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false,updatable = false)
+    @JoinColumn(name = "account_from_id")
+    private Account accountFrom;
+
+    @ManyToOne
+    @JoinColumn(name = "account_to_id")
+    private Account accountTo;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
 

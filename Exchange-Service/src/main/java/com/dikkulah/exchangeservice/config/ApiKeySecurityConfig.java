@@ -28,10 +28,7 @@ public class ApiKeySecurityConfig {
         ApiKeyAuthFilter filter = new ApiKeyAuthFilter(principalRequestHeader);
         filter.setAuthenticationManager(authentication -> {
             String principal = (String) authentication.getPrincipal();
-
-
             if (!principalRequestValue.equals(principal)) {
-
                 throw new BadCredentialsException("Hatalı Api Key");
             }
             authentication.setAuthenticated(true);

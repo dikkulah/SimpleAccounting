@@ -15,18 +15,14 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
 
-    @Autowired
-    CookieUtility cookieUtility;
-
     public MainLayout(CookieUtility cookieUtility) {
         setPrimarySection(Section.DRAWER);
-        addDrawerContent();
+        addDrawerContent(cookieUtility);
         addHeaderContent();
         if (cookieUtility.getCookie("token").equals("") || cookieUtility.getCookie("token") == null
         ) {
@@ -44,14 +40,14 @@ public class MainLayout extends AppLayout {
         addToNavbar(true, toggle, viewTitle);
     }
 
-    private void addDrawerContent() {
+    private void addDrawerContent(CookieUtility cookieUtility) {
         H1 appName = new H1("Ufuk Forex");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
         Scroller scroller = new Scroller(createNavigation());
 
-        addToDrawer(header, scroller, createFooter());
+        addToDrawer(header, scroller, createFooter(cookieUtility));
     }
 
     private AppNav createNavigation() {
@@ -64,7 +60,7 @@ public class MainLayout extends AppLayout {
         return nav;
     }
 
-    private Footer createFooter() {
+    private Footer createFooter(CookieUtility cookieUtility) {
         Footer footer = new Footer();
         Button button = new Button("Çıkış Yap");
         button.addClickListener(e -> {

@@ -18,6 +18,12 @@ public class Token {
     @JsonProperty("token")
     private String token;
 
+    public Token() {
+    }
+
+    public Token(String token) {
+        this.token = token;
+    }
 
     @JsonProperty("token")
     public String getToken() {
