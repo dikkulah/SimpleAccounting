@@ -76,7 +76,7 @@ public class AccountListView extends VerticalLayout {
             card.setSizeFull();
             add(card);
         } else if (account.getCurrency() == Currency.TL) {
-            var card = new ClickableCard(new IconItem(getImage("gold.png", "/META-INF/pictures/gold.png"), "Lira Hesabı", account.getAmount() + " ₺\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
+            var card = new ClickableCard(new IconItem(getImage("gold.png", "/META-INF/pictures/tl.png"), "Lira Hesabı", account.getAmount() + " ₺\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
             card.setSizeFull();
             add(card);
         } else if (account.getCurrency() == Currency.EURO) {
@@ -84,7 +84,7 @@ public class AccountListView extends VerticalLayout {
             card.setSizeFull();
             add(card);
         } else if (account.getCurrency() == Currency.GOLD) {
-            var card = new ClickableCard(new IconItem(getImage("tl.png", "/META-INF/pictures/tl.png"), "Altın Hesabı", account.getAmount() + " gram\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
+            var card = new ClickableCard(new IconItem(getImage("tl.png", "/META-INF/pictures/gold.png"), "Altın Hesabı", account.getAmount() + " gram\n" + "Hesap no: " + account.getId()), new Actions(getActionButton(cookieUtility, account)));
             card.setSizeFull();
             add(card);
         }

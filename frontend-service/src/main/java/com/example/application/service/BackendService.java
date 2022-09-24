@@ -29,13 +29,11 @@ public class BackendService {
             .build();
 
     public ResponseEntity<Token> login(String username, String password) {
-
-
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("username", username);
         bodyMap.put("password", password);
         var responseToken = client.post()
-                .uri("login")
+                .uri("user/login")
                 .body(BodyInserters.fromValue(bodyMap))
                 .retrieve()
                 .bodyToFlux(Token.class)

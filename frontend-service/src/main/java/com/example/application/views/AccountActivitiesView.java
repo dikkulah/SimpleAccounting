@@ -27,6 +27,7 @@ public class AccountActivitiesView extends VerticalLayout {
     public AccountActivitiesView(BackendService backendService, CookieUtility cookieUtility) {
         var activitiesResponse = backendService.getAccountActivities(AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET), UUID.fromString(Objects.requireNonNull(AES.decrypt(cookieUtility.getCookie("account"), AES.SECRET))), 5);
 
+
         Select<String> itemCountSelect = new Select<>();
         itemCountSelect.setLabel("Veri Sayısı");
         itemCountSelect.setItems("5", "10", "25", "50");

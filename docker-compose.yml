@@ -1,15 +1,27 @@
 version: '3.8'
 services:
-  database:
+  database_account:
     image: postgres:14.1-alpine
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=accounting
+      - POSTGRES_DB=account
     ports:
       - '5432:5432'
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - account:/var/lib/postgresql/data
+  database_exchange:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=exchange
+    ports:
+      - '5433:5432'
+    volumes:
+      - exchange:/var/lib/postgresql/data
 volumes:
-  pgdata:
+  exchange:
+  account:

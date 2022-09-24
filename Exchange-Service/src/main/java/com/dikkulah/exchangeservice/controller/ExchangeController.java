@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExchangeController {
     @GetMapping
     public String get(Authentication authentication) {
-        return "Başarılı";
+        return "";
     }
 
 }
