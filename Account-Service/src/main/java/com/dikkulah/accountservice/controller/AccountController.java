@@ -2,6 +2,7 @@ package com.dikkulah.accountservice.controller;
 
 import com.dikkulah.accountservice.dto.AccountDto;
 import com.dikkulah.accountservice.dto.ActivityDto;
+import com.dikkulah.accountservice.model.Activity;
 import com.dikkulah.accountservice.model.enums.Currency;
 import com.dikkulah.accountservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,19 @@ public class AccountController {
 
     @PostMapping("{currency}")
     public ResponseEntity<AccountDto> addAccount(Authentication authentication, @PathVariable Currency currency) {
-        return ResponseEntity.ok().body(accountService.addAccount(authentication.getName(),currency));
+        return ResponseEntity.ok().body(accountService.addAccount(authentication.getName(), currency));
     }
 
 
     @GetMapping("{uuid}/{count}")
-
     public ResponseEntity<List<ActivityDto>> getAccountActivities(Authentication authentication, @PathVariable UUID uuid, @PathVariable Integer count) {
         return ResponseEntity.ok().body(accountService.findAccountActivities(authentication.getName(), uuid, count));
+    }
+
+    @PostMapping("/{accountId}/activity")
+    public ResponseEntity<Boolean> addActivity(Authentication authentication, @RequestBody Activity activity,@PathVariable UUID accountId) {
+        log.info(activity.toString() +  accountId);
+        return ResponseEntity.ok().body(accountService.addActivity(authentication.getName(), activity,accountId));
     }
 
 

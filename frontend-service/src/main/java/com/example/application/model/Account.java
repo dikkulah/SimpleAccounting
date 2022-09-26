@@ -9,6 +9,7 @@ import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -22,7 +23,7 @@ import java.util.List;
 public class Account {
 
     @JsonProperty("id")
-    private String id;
+    private UUID id;
     @JsonProperty("currency")
     private Currency currency;
     @JsonProperty("amount")
@@ -31,12 +32,12 @@ public class Account {
     private List<Activity> activities = new ArrayList<>();
 
     @JsonProperty("id")
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

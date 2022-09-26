@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.UUID;
 
 @PageTitle("Forex - Exchange")
 @Route(value = "exchange", layout = MainLayout.class)
@@ -105,8 +106,8 @@ public class ExchangeView extends VerticalLayout {
                 if (!accountTo.isEmpty() && !accountFrom.isEmpty() && !quantity.isEmpty()) {
                     if (x >= 0) {
                         Exchange exchangeRequest = new Exchange();
-                        exchangeRequest.setAccountFrom(accountFrom.getValue());
-                        exchangeRequest.setAccountTo(accountTo.getValue());
+                        exchangeRequest.setAccountFrom(accountFrom.getValue().getId());
+                        exchangeRequest.setAccountTo(accountTo.getValue().getId());
                         exchangeRequest.setToken(token);
                         exchangeRequest.setQuantity(BigDecimal.valueOf(quantity.getValue()));
                         exchangeRequest.setCurrencyTo(currencyConvert.getValue());
@@ -135,8 +136,8 @@ public class ExchangeView extends VerticalLayout {
                 if (!accountTo.isEmpty() && !accountFrom.isEmpty() && !quantity.isEmpty()) {
                     if (x >= 0) {
                         Exchange exchangeRequest = new Exchange();
-                        exchangeRequest.setAccountFrom(accountTo.getValue());
-                        exchangeRequest.setAccountTo(accountFrom.getValue());
+                        exchangeRequest.setAccountFrom(accountTo.getValue().getId());
+                        exchangeRequest.setAccountTo(accountFrom.getValue().getId());
                         exchangeRequest.setToken(token);
                         exchangeRequest.setQuantity(BigDecimal.valueOf(quantity.getValue()));
                         exchangeRequest.setCurrencyTo(currency.getValue());

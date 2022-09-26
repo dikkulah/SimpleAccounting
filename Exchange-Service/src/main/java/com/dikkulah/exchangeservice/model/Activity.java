@@ -31,6 +31,7 @@ public class Activity {
     private BigDecimal amount;
     @JsonProperty("activityType")
     private ActivityType activityType;
+
     @JsonProperty("description")
     private String description;
 

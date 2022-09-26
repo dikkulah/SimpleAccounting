@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.annotation.Generated;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -22,7 +23,7 @@ import java.math.BigDecimal;
 public class Exchange {
 
     @JsonProperty("id")
-    private String id;
+    private UUID id;
     @JsonProperty("currencyFrom")
     private Currency currencyFrom;
     @JsonProperty("currencyTo")
@@ -36,9 +37,9 @@ public class Exchange {
     @JsonProperty("token")
     private String token;
     @JsonProperty("accountFrom")
-    private Account accountFrom;
+    private UUID accountFrom;
     @JsonProperty("accountTo")
-    private Account accountTo;
+    private UUID accountTo;
 
     @JsonProperty("token")
 
@@ -54,35 +55,35 @@ public class Exchange {
 
     @JsonProperty("accountFrom")
 
-    public Account getAccountFrom() {
+    public UUID getAccountFrom() {
         return accountFrom;
     }
 
     @JsonProperty("accountFrom")
 
-    public void setAccountFrom(Account accountFrom) {
+    public void setAccountFrom(UUID accountFrom) {
         this.accountFrom = accountFrom;
     }
 
     @JsonProperty("accountTo")
 
-    public Account getAccountTo() {
+    public UUID getAccountTo() {
         return accountTo;
     }
 
     @JsonProperty("accountTo")
 
-    public void setAccountTo(Account accountTo) {
+    public void setAccountTo(UUID accountTo) {
         this.accountTo = accountTo;
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -2,24 +2,29 @@ package com.dikkulah.accountservice.service;
 
 import com.dikkulah.accountservice.dto.AccountDto;
 import com.dikkulah.accountservice.dto.ActivityDto;
+import com.dikkulah.accountservice.exception.AccountNotFoundException;
 import com.dikkulah.accountservice.exception.UserNotFoundException;
 import com.dikkulah.accountservice.model.Account;
+import com.dikkulah.accountservice.model.Activity;
 import com.dikkulah.accountservice.model.User;
 import com.dikkulah.accountservice.model.enums.Currency;
 import com.dikkulah.accountservice.repository.AccountRepository;
 import com.dikkulah.accountservice.repository.ActivitiesRepository;
 import com.dikkulah.accountservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
@@ -48,8 +53,28 @@ public class AccountService {
                 .map(activity -> modelMapper.map(activity, ActivityDto.class)).toList();
     }
 
-
     private void checkUser(String name) {
         userRepository.findByUsername(name).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Transactional(Transactional.TxType.REQUIRED)
+    public Boolean addActivity(String name, Activity activity, UUID accountId) {
+        try {
+            User user = userRepository.findByUsername(name).orElseThrow(UserNotFoundException::new);
+            Account foundAccount = accountRepository.findById(accountId).orElseThrow(AccountNotFoundException::new);
+
+            if (user.getAccounts().stream().anyMatch(account -> account.getId().compareTo(accountId) == 0)) {
+
+                activity.setAccount(foundAccount);
+                activitiesRepository.save(activity);
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+
     }
 }

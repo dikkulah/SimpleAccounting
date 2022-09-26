@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class ExchangeController {
+
     private final ExchangeService exchangeService;
     private final AccountService accountService;
     @PostMapping
     public String doExchange(@RequestBody Exchange exchange) {
-        accountService.sendExchangeToAccountService();
 
-        return "";
+            log.info(exchange.toString());
+            var responseFromAccount = accountService.createActivityAndSendAccountService(exchange);
+
+        return null;
     }
 
 }

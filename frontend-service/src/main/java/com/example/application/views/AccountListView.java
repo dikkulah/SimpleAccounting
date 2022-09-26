@@ -93,7 +93,7 @@ public class AccountListView extends VerticalLayout {
 
     private ActionButton getActionButton(CookieUtility cookieUtility, Account account) {
         return new ActionButton("Hesap detayları", event -> {
-            cookieUtility.addCookies("account", AES.encrypt(account.getId(), AES.SECRET));
+            cookieUtility.addCookies("account", AES.encrypt(account.getId().toString(), AES.SECRET));
             UI.getCurrent().getPage().setLocation("/details");
         });
     }
