@@ -33,9 +33,7 @@ public class AccountActivitiesView extends VerticalLayout {
         itemCountSelect.setItems("5", "10", "25", "50");
         itemCountSelect.setPlaceholder("5");
         itemCountSelect.setEmptySelectionAllowed(false);
-        itemCountSelect.addValueChangeListener(e -> {
-            backendService.getAccountActivities(AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET), UUID.fromString(Objects.requireNonNull(AES.decrypt(cookieUtility.getCookie("account"), AES.SECRET))), Integer.valueOf(itemCountSelect.getValue()));
-        });
+
         add(itemCountSelect);
 
 
@@ -49,6 +47,9 @@ public class AccountActivitiesView extends VerticalLayout {
         activityGrid.setItems(activitiesResponse.getBody());
 
         add(activityGrid);
+        itemCountSelect.addValueChangeListener(e -> {
+            activityGrid.setItems(backendService.getAccountActivities(AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET), UUID.fromString(Objects.requireNonNull(AES.decrypt(cookieUtility.getCookie("account"), AES.SECRET))), Integer.valueOf(itemCountSelect.getValue())).getBody());
 
+        });
     }
 }
