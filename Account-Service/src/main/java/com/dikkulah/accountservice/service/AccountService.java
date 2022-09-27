@@ -77,8 +77,10 @@ public class AccountService {
             }
             return Boolean.FALSE;
 
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException();
+        }catch (AccountNotFoundException e){
+            throw new AccountNotFoundException();
         }
 
 
