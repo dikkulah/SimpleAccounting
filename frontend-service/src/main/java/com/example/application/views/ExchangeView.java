@@ -65,6 +65,7 @@ public class ExchangeView extends VerticalLayout {
         accountTo.setLabel("-");
         exchange.setEnabled(false);
         activity.addValueChangeListener(e -> {
+            exchange.setEnabled(true);
             resetValues(multiple, quantity, accountTo, accountFrom, currency, currencyConvert);
             switch (activity.getValue()) {
                 case BUY -> {
@@ -190,7 +191,7 @@ public class ExchangeView extends VerticalLayout {
         accountFrom.setValue(null);
         accountTo.setValue(null);
         multiple.setValue(null);
-        ;
+
         quantity.setValue(null);
     }
 
