@@ -65,7 +65,7 @@ public class ExchangeView extends VerticalLayout {
         accountTo.setLabel("-");
         exchange.setEnabled(false);
         activity.addValueChangeListener(e -> {
-            exchange.setEnabled(true);
+            resetValues(multiple, quantity, accountTo, accountFrom, currency, currencyConvert);
             switch (activity.getValue()) {
                 case BUY -> {
                     currencyConvert.setLabel("Satış yapılacak Para Birimi");
@@ -182,6 +182,16 @@ public class ExchangeView extends VerticalLayout {
         add(horizontalTop, horizontal2, horizontal3);
         add(exchange);
 
+    }
+
+    private static void resetValues(NumberField multiple, NumberField quantity, Select<Account> accountTo, Select<Account> accountFrom, Select<Currency> currency, Select<Currency> currencyConvert) {
+        currencyConvert.setValue(null);
+        currency.setValue(null);
+        accountFrom.setValue(null);
+        accountTo.setValue(null);
+        multiple.setValue(null);
+        ;
+        quantity.setValue(null);
     }
 
     private void setMultiply(BackendService backendService, NumberField multiple, Select<ActivityType> activity, Select<Currency> currency, Select<Currency> currencyConvert) {

@@ -15,7 +15,8 @@ mvn clean package
 ```
 docker-compose up -d
 ```
-- http://localhost:8080/swagger-ui/index.html  Swagger UI
+- http://localhost:8080/swagger-ui/index.html Account Swagger UI - Bearer Token authentication
+- http://localhost:8081/swagger-ui/index.html Exchange Swagger UI - ApiKey authentication
 - Frontend http://localhost:8085
 - Hesap Servisi http://localhost:8080
 - Exchange Servisi http://localhost:8081
