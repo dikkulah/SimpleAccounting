@@ -1,10 +1,7 @@
 package com.example.application.service;
 
 
-import com.example.application.model.Account;
-import com.example.application.model.Activity;
-import com.example.application.model.Exchange;
-import com.example.application.model.Token;
+import com.example.application.model.*;
 import com.example.application.model.enums.Currency;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,6 +101,16 @@ public class BackendService {
                 .body(BodyInserters.fromValue(exchangeRequest))
                 .retrieve()
                 .bodyToMono(Boolean.class)
+                .onErrorMap(e -> new RuntimeException(e.getMessage())).block();
+    }
+
+    public Double getMultiply(MultiplyRequest multiplyRequest) {
+        return exchangeClient.post().uri("/exchange/multiply")
+                .header(apiKey, value)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(multiplyRequest))
+                .retrieve()
+                .bodyToMono(Double.class)
                 .onErrorMap(e -> new RuntimeException(e.getMessage())).block();
     }
 }

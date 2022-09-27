@@ -2,6 +2,7 @@ package com.example.application.views;
 
 import com.example.application.model.Account;
 import com.example.application.model.Exchange;
+import com.example.application.model.MultiplyRequest;
 import com.example.application.model.enums.ActivityType;
 import com.example.application.model.enums.Currency;
 import com.example.application.service.BackendService;
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Random;
 
 @PageTitle("Forex - Exchange")
 @Route(value = "exchange", layout = MainLayout.class)
@@ -91,14 +91,14 @@ public class ExchangeView extends VerticalLayout {
             accountFrom.setItems(accounts.stream().filter(account -> account.getCurrency() == currency.getValue()).toList());
             currencyConvert.setItems(Arrays.stream(Currency.values()).filter(currency1 -> currency.getValue() != currency1).toList());
             if ((currency.getValue() != null) && (currencyConvert.getValue() != null)) {
-                multiple.setValue(calculateMultiple(currency.getValue(), currencyConvert.getValue()));
+                setMultiply(backendService, multiple, activity, currency, currencyConvert);
             }
             horizontalTop.add(accountFrom);
         });
         currencyConvert.addValueChangeListener(e -> {
             accountTo.setItems(accounts.stream().filter(account -> currencyConvert.getValue() == account.getCurrency()).toList());
             if ((currency.getValue() != null) && (currencyConvert.getValue() != null)) {
-                multiple.setValue(calculateMultiple(currency.getValue(), currencyConvert.getValue()));
+                setMultiply(backendService, multiple, activity, currency, currencyConvert);
             }
             horizontal3.add(quantity, multiple, result);
         });
@@ -184,32 +184,12 @@ public class ExchangeView extends VerticalLayout {
 
     }
 
-
-    private Double calculateMultiple(Currency from, Currency to) {
-        Random random = new Random();
-        return switch (from) {
-            case DOLLAR -> switch (to) {
-                case TL -> random.nextDouble() * (19.0 - 17.0) + 17.0;
-                case DOLLAR -> 1D;
-                case EURO -> random.nextDouble() * (1.1 - 1.0) + 1.0;
-                case GOLD -> random.nextDouble() * (0.02 - 0.015) + 0.015;
-            };
-            case TL -> switch (to) {
-                case TL -> 1D;
-                case DOLLAR, EURO -> random.nextDouble() * (0.06 - 0.05) + 0.05;
-                case GOLD -> random.nextDouble() * (0.0012 - 0.0010) + 0.0010;
-            };
-            case GOLD -> switch (to) {
-                case TL -> random.nextDouble() * (950. - 900.) + 900.;
-                case DOLLAR, EURO -> random.nextDouble() * (53. - 50.) + 50.;
-                case GOLD -> 1D;
-            };
-            case EURO -> switch (to) {
-                case TL -> random.nextDouble() * (18.2 - 17.) + 17.;
-                case DOLLAR -> random.nextDouble() * (0.99 - 0.93) + 0.93;
-                case EURO -> 1D;
-                case GOLD -> random.nextDouble() * (0.019D - 0.014D) + 0.014D;
-            };
-        };
+    private void setMultiply(BackendService backendService, NumberField multiple, Select<ActivityType> activity, Select<Currency> currency, Select<Currency> currencyConvert) {
+        if (activity.getValue() == ActivityType.BUY)
+            multiple.setValue(backendService.getMultiply(new MultiplyRequest(currency.getValue(), currencyConvert.getValue(), ActivityType.BUY)));
+        else
+            multiple.setValue(backendService.getMultiply(new MultiplyRequest(currency.getValue(), currencyConvert.getValue(), ActivityType.SELL)));
     }
+
+
 }
