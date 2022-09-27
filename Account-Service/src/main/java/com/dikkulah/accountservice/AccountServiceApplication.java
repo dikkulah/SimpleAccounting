@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @OpenAPIDefinition(info = @Info(title = "Ufuk Forex - Account Service API"
         ,version = "0.1", description = "Ufuk Forex - Account Service"),
 servers = {@Server(url = "http://localhost:8080/")})
-@SecurityScheme(name = "Security Config", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@SecurityScheme(name = "SecurityConfig", scheme = "bearer",bearerFormat = "JWT", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class AccountServiceApplication {
 
     public static void main(String[] args) {

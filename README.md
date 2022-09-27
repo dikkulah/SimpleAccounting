@@ -15,6 +15,10 @@ mvn clean package
 ```
 docker-compose up -d
 ```
+- http://localhost:8080/swagger-ui/index.html  Swagger UI
+- Frontend http://localhost:8085
+- Hesap Servisi http://localhost:8080
+- Exchange Servisi http://localhost:8081
 
 ![img.png](image/img.png)
 # Uygulama ekranları
