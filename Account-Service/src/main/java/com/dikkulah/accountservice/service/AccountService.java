@@ -93,8 +93,10 @@ public class AccountService {
                     user.getAccounts().stream().anyMatch(account -> account.getId().compareTo(accountId) == 0))
                 return Boolean.TRUE;
             else return Boolean.FALSE;
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException();
+        }catch (AccountNotFoundException e){
+            throw new AccountNotFoundException();
         }
     }
 }

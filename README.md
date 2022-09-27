@@ -6,12 +6,17 @@ Ft Teknoloji Practium Case
 mvn clean package
 ```
 - Veritabanlıarını ayağa kaldırma
+- ufuk 123456 hazır kullanıcı - içerisinde işlemler mevcut
+- mehmet 123456 hazır kullanıcı
+- Account servisinin otomatik olarak hazır verileri ekleyen data.sql i mevcut proje ayağa kalkarken çalışıyor, tekrar ayağa kaldırılırken hata verirse application.ymlden data kısmı silinmeli
+
+# Docker ile veritabanlarını ayağa kaldırma
 ```
 docker-compose up -d
 ```
 
 ![img.png](image/img.png)
-
+# Uygulama ekranları
 - login page
 - ![img_1.png](image/img_1.png)
 - Account page
