@@ -97,14 +97,13 @@ public class BackendService {
     }
 
 
-    public ResponseEntity<Exchange> doExchange(Exchange exchangeRequest) {
-        var response = exchangeClient.post().uri("/exchange")
+    public Boolean doExchange(Exchange exchangeRequest) {
+        return exchangeClient.post().uri("/exchange")
                 .header(apiKey, value)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(exchangeRequest))
                 .retrieve()
-                .bodyToMono(Exchange.class)
+                .bodyToMono(Boolean.class)
                 .onErrorMap(e -> new RuntimeException(e.getMessage())).block();
-        return ResponseEntity.ok(response);
     }
 }

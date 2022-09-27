@@ -3,8 +3,10 @@ package com.dikkulah.exchangeservice.service;
 import com.dikkulah.exchangeservice.model.Activity;
 import com.dikkulah.exchangeservice.model.Exchange;
 import com.dikkulah.exchangeservice.model.enums.ActivityType;
+import com.dikkulah.exchangeservice.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Slf4j
 public class AccountService {
+    @Autowired
+    ExchangeRepository exchangeRepository;
     WebClient accountClient = WebClient.builder()
             .baseUrl("http://localhost:8080/")
             .build();
@@ -47,8 +51,10 @@ public class AccountService {
                 var buyResponse = accountClient.post().uri("accounts/" + exchange.getAccountFrom() + "/activity/").header(HttpHeaders.AUTHORIZATION, "Bearer " + exchange.getToken()).contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromValue(activity1)).retrieve().bodyToMono(Boolean.class).onErrorMap(e -> new RuntimeException(e.getMessage())).block();
                 var sellResponse = accountClient.post().uri("accounts/" + exchange.getAccountTo() + "/activity/").header(HttpHeaders.AUTHORIZATION, "Bearer " + exchange.getToken()).contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromValue(activity2)).retrieve().bodyToMono(Boolean.class).onErrorMap(e -> new RuntimeException(e.getMessage())).block();
 
-                if (Boolean.TRUE.equals(sellResponse) && Boolean.TRUE.equals(buyResponse))
+                if (Boolean.TRUE.equals(sellResponse) && Boolean.TRUE.equals(buyResponse)){
+                    exchangeRepository.save(exchange);
                     return ResponseEntity.ok(Boolean.TRUE);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
