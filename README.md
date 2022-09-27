@@ -5,11 +5,10 @@ Ft Teknoloji Practium Case
 ```maven
 mvn clean package
 ```
-- Swagger configure kalan zaman nedeniyle edilemedi. 
-- Veritabanlıarını ayağa kaldırma
+- Aynı zamanda staj yaptığım için modelmapper ve dto yapısını atladım.
 - ufuk 123456 hazır kullanıcı - içerisinde işlemler mevcut
 - mehmet 123456 hazır kullanıcı
-- Account servisinin otomatik olarak hazır verileri ekleyen data.sql i mevcut proje ayağa kalkarken çalışıyor, tekrar ayağa kaldırılırken hata verirse application.ymlden data kısmı silinmeli
+- Account servisinin otomatik olarak hazır verileri ekleyen data.sql i mevcut proje ayağa kalkarken çalışıyor, tekrar ayağa kaldırılırken hata verirse application.yml de yazan işlem yapılmalı.
 
 # Docker ile veritabanlarını ayağa kaldırma
 ```
