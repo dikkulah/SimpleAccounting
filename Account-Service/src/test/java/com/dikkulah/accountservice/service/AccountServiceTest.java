@@ -82,7 +82,7 @@ class AccountServiceTest {
         account.setId(uuid);
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(accountRepository.findById(uuid)).thenReturn(Optional.of(account));
-        assertEquals(accountService.addActivity(username,activity,uuid),Boolean.FALSE);
+        assertEquals(Boolean.FALSE, accountService.addActivity(username, activity, uuid));
         verify(userRepository,times(1)).findByUsername(username);
         verify(accountRepository,times(1)).findById(uuid);
 
@@ -105,7 +105,7 @@ class AccountServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(accountRepository.findById(uuid)).thenReturn(Optional.of(account));
         when(activitiesRepository.save(activity)).thenReturn(activity);
-        assertEquals(accountService.addActivity(username,activity,uuid),Boolean.TRUE);
+        assertEquals(Boolean.TRUE, accountService.addActivity(username, activity, uuid));
         verify(userRepository,times(1)).findByUsername(username);
         verify(accountRepository,times(1)).findById(uuid);
 
@@ -128,7 +128,7 @@ class AccountServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(accountRepository.findById(uuid)).thenReturn(Optional.of(account));
         when(activitiesRepository.save(activity)).thenReturn(activity);
-        assertEquals(accountService.addActivity(username,activity,uuid),Boolean.TRUE);
+        assertEquals(Boolean.TRUE,accountService.addActivity(username,activity,uuid));
         verify(userRepository,times(1)).findByUsername(username);
         verify(accountRepository,times(1)).findById(uuid);
 
@@ -175,7 +175,7 @@ class AccountServiceTest {
         account.setId(uuid);
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(accountRepository.findById(uuid)).thenReturn(Optional.of(account));
-        assertEquals(accountService.checkBalance(username,amount,uuid),Boolean.FALSE);
+        assertEquals(Boolean.FALSE, accountService.checkBalance(username, amount, uuid));
         verify(userRepository,times(1)).findByUsername(username);
         verify(accountRepository,times(1)).findById(uuid);
 
@@ -194,7 +194,7 @@ class AccountServiceTest {
         user.getAccounts().add(account);
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(accountRepository.findById(uuid)).thenReturn(Optional.of(account));
-        assertEquals(accountService.checkBalance(username,amount,uuid),Boolean.FALSE);
+        assertEquals(Boolean.FALSE, accountService.checkBalance(username, amount, uuid));
         verify(userRepository,times(1)).findByUsername(username);
         verify(accountRepository,times(1)).findById(uuid);
 
@@ -213,7 +213,7 @@ class AccountServiceTest {
         user.getAccounts().add(account);
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(accountRepository.findById(uuid)).thenReturn(Optional.of(account));
-        assertEquals(accountService.checkBalance(username,amount,uuid),Boolean.TRUE);
+        assertEquals(Boolean.TRUE, accountService.checkBalance(username, amount, uuid));
         verify(userRepository,times(1)).findByUsername(username);
         verify(accountRepository,times(1)).findById(uuid);
 

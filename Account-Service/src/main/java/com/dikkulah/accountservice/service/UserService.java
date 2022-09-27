@@ -1,7 +1,6 @@
 package com.dikkulah.accountservice.service;
 
 import com.dikkulah.accountservice.exception.UserNotFoundException;
-import com.dikkulah.accountservice.model.Account;
 import com.dikkulah.accountservice.model.User;
 import com.dikkulah.accountservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

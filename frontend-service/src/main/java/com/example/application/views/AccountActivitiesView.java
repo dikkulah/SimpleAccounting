@@ -47,9 +47,6 @@ public class AccountActivitiesView extends VerticalLayout {
         activityGrid.setItems(activitiesResponse.getBody());
 
         add(activityGrid);
-        itemCountSelect.addValueChangeListener(e -> {
-            activityGrid.setItems(backendService.getAccountActivities(AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET), UUID.fromString(Objects.requireNonNull(AES.decrypt(cookieUtility.getCookie("account"), AES.SECRET))), Integer.valueOf(itemCountSelect.getValue())).getBody());
-
-        });
+        itemCountSelect.addValueChangeListener(e -> activityGrid.setItems(backendService.getAccountActivities(AES.decrypt(cookieUtility.getCookie("token"), AES.SECRET), UUID.fromString(Objects.requireNonNull(AES.decrypt(cookieUtility.getCookie("account"), AES.SECRET))), Integer.valueOf(itemCountSelect.getValue())).getBody()));
     }
 }
