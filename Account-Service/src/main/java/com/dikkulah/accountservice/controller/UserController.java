@@ -26,13 +26,6 @@ public class UserController {
     private final JWTUtility jwtUtility;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("singup")
-    public ResponseEntity<User> singUp(@RequestBody User request) {
-        log.info(request.toString());
-        return new ResponseEntity<>(userService.save(request), HttpStatus.OK);
-    }
-
-
     @PostMapping("login")
     public ResponseEntity<TokenResponse> login(@RequestBody TokenRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -41,6 +34,13 @@ public class UserController {
 
         return new ResponseEntity<>(new TokenResponse(token), HttpStatus.OK);
     }
+
+    @PostMapping("singup")
+    public ResponseEntity<User> singUp(@RequestBody User request) {
+        log.info(request.toString());
+        return new ResponseEntity<>(userService.save(request), HttpStatus.OK);
+    }
+
 
 
 }
