@@ -7,6 +7,7 @@ import com.dikkulah.accountservice.exception.UserNotFoundException;
 import com.dikkulah.accountservice.model.Account;
 import com.dikkulah.accountservice.model.Activity;
 import com.dikkulah.accountservice.model.User;
+import com.dikkulah.accountservice.model.enums.ActivityType;
 import com.dikkulah.accountservice.model.enums.Currency;
 import com.dikkulah.accountservice.repository.AccountRepository;
 import com.dikkulah.accountservice.repository.ActivitiesRepository;
@@ -64,7 +65,12 @@ public class AccountService {
             Account foundAccount = accountRepository.findById(accountId).orElseThrow(AccountNotFoundException::new);
 
             if (user.getAccounts().stream().anyMatch(account -> account.getId().compareTo(accountId) == 0)) {
+                if (activity.getActivityType() == ActivityType.SELL) {
+                    foundAccount.setAmount(foundAccount.getAmount().subtract(activity.getAmount()));
+                } else if (activity.getActivityType() == ActivityType.BUY) {
+                    foundAccount.setAmount(foundAccount.getAmount().add(activity.getAmount()));
 
+                }
                 activity.setAccount(foundAccount);
                 activitiesRepository.save(activity);
                 return Boolean.TRUE;
@@ -76,5 +82,19 @@ public class AccountService {
         }
 
 
+    }
+
+    public Boolean checkBalance(String name, BigDecimal amount, UUID accountId) {
+        try {
+            User user = userRepository.findByUsername(name).orElseThrow(UserNotFoundException::new);
+
+            Account foundAccount = accountRepository.findById(accountId).orElseThrow(AccountNotFoundException::new);
+            if (foundAccount.getAmount().compareTo(amount) >= 0 &&
+                    user.getAccounts().stream().anyMatch(account -> account.getId().compareTo(accountId) == 0))
+                return Boolean.TRUE;
+            else return Boolean.FALSE;
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

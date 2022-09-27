@@ -7,6 +7,7 @@ import com.example.application.model.enums.Currency;
 import com.example.application.service.BackendService;
 import com.example.application.utility.AES;
 import com.example.application.utility.CookieUtility;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.UUID;
 
 @PageTitle("Forex - Exchange")
 @Route(value = "exchange", layout = MainLayout.class)
@@ -34,7 +34,7 @@ public class ExchangeView extends VerticalLayout {
         NumberField quantity = new NumberField();
         com.vaadin.flow.component.button.Button exchange = new Button();
         exchange.setText("Exchange");
-        quantity.setLabel("Miktar");
+        quantity.setLabel("-");
         NumberField result = new NumberField();
         result.setLabel("Çevirilen Miktar");
         result.setReadOnly(true);
@@ -66,19 +66,23 @@ public class ExchangeView extends VerticalLayout {
         exchange.setEnabled(false);
         activity.addValueChangeListener(e -> {
             exchange.setEnabled(true);
-            if (activity.getValue() == ActivityType.BUY) {
-                currencyConvert.setLabel("Satış yapılacak Para Birimi");
-                currency.setLabel("Alım yapılacak para birimi");
-                accountFrom.setLabel("Aktarılacak Hesap");
-                accountTo.setLabel("Satış Yapılacak Hesap");
-                multiple.setLabel("Satış Kuru");
-
-            } else if (activity.getValue() == ActivityType.SELL) {
-                currencyConvert.setLabel("Alım yapılacak Para Birimi");
-                currency.setLabel("Satış yapılacak para birimi");
-                accountFrom.setLabel("Alım Yapılacak Hesap");
-                accountTo.setLabel("Aktarılacak Hesap");
-                multiple.setLabel("Alış Kuru");
+            switch (activity.getValue()) {
+                case BUY -> {
+                    currencyConvert.setLabel("Satış yapılacak Para Birimi");
+                    currency.setLabel("Alım yapılacak para birimi");
+                    accountFrom.setLabel("Aktarılacak Hesap");
+                    accountTo.setLabel("Satış Yapılacak Hesap");
+                    multiple.setLabel("Alış Kuru");
+                    quantity.setLabel("Alınacak Miktar");
+                }
+                case SELL -> {
+                    currencyConvert.setLabel("Alım yapılacak Para Birimi");
+                    currency.setLabel("Satış yapılacak para birimi");
+                    accountFrom.setLabel("Satış Yapılacak Hesap");
+                    accountTo.setLabel("Aktarılacak Hesap");
+                    multiple.setLabel("Satış Kuru");
+                    quantity.setLabel("Satılacak Miktar");
+                }
             }
         });
 
@@ -86,21 +90,21 @@ public class ExchangeView extends VerticalLayout {
         currency.addValueChangeListener(e -> {
             accountFrom.setItems(accounts.stream().filter(account -> account.getCurrency() == currency.getValue()).toList());
             currencyConvert.setItems(Arrays.stream(Currency.values()).filter(currency1 -> currency.getValue() != currency1).toList());
-            if (currency.getValue() != null && currencyConvert.getValue() != null) {
+            if ((currency.getValue() != null) && (currencyConvert.getValue() != null)) {
                 multiple.setValue(calculateMultiple(currency.getValue(), currencyConvert.getValue()));
             }
             horizontalTop.add(accountFrom);
         });
         currencyConvert.addValueChangeListener(e -> {
             accountTo.setItems(accounts.stream().filter(account -> currencyConvert.getValue() == account.getCurrency()).toList());
-            if (currency.getValue() != null && currencyConvert.getValue() != null) {
+            if ((currency.getValue() != null) && (currencyConvert.getValue() != null)) {
                 multiple.setValue(calculateMultiple(currency.getValue(), currencyConvert.getValue()));
             }
             horizontal3.add(quantity, multiple, result);
         });
         exchange.addClickListener(e -> {
             Notification notification = new Notification();
-            notification.setDuration(500000);
+            notification.setDuration(5000);
             if (activity.getValue() == ActivityType.BUY) {
                 int x = accountTo.getValue().getAmount().compareTo(BigDecimal.valueOf(result.getValue()));
                 if (!accountTo.isEmpty() && !accountFrom.isEmpty() && !quantity.isEmpty()) {
@@ -118,6 +122,8 @@ public class ExchangeView extends VerticalLayout {
                             backendService.doExchange(exchangeRequest);
                             notification.setText("İşlem gerekleştirildi.");
                             notification.setOpened(true);
+                            UI.getCurrent().getPage().reload();
+
                         } catch (Exception ex) {
                             log.info(ex.getMessage());
                             notification.setText("İşlem gerçekleştirilemedi.");
@@ -132,22 +138,23 @@ public class ExchangeView extends VerticalLayout {
                     notification.setOpened(true);
                 }
             } else if (activity.getValue() == ActivityType.SELL) {
-                int x = accountFrom.getValue().getAmount().compareTo(BigDecimal.valueOf(result.getValue()));
+                int x = accountFrom.getValue().getAmount().compareTo(BigDecimal.valueOf(quantity.getValue()));
                 if (!accountTo.isEmpty() && !accountFrom.isEmpty() && !quantity.isEmpty()) {
                     if (x >= 0) {
                         Exchange exchangeRequest = new Exchange();
                         exchangeRequest.setAccountFrom(accountTo.getValue().getId());
                         exchangeRequest.setAccountTo(accountFrom.getValue().getId());
                         exchangeRequest.setToken(token);
-                        exchangeRequest.setQuantity(BigDecimal.valueOf(quantity.getValue()));
+                        exchangeRequest.setQuantity(BigDecimal.valueOf(result.getValue()));
                         exchangeRequest.setCurrencyTo(currency.getValue());
                         exchangeRequest.setCurrencyFrom(currencyConvert.getValue());
-                        exchangeRequest.setTotalAmount(BigDecimal.valueOf(result.getValue()));
+                        exchangeRequest.setTotalAmount(BigDecimal.valueOf(quantity.getValue()));
                         exchangeRequest.setConversionMultiple(BigDecimal.valueOf(multiple.getValue()));
                         try {
                             backendService.doExchange(exchangeRequest);
                             notification.setText("İşlem gerekleştirildi.");
                             notification.setOpened(true);
+                            UI.getCurrent().getPage().reload();
                         } catch (Exception ex) {
                             log.info(ex.getMessage());
                             notification.setText("İşlem gerçekleştirilemedi.");
@@ -162,6 +169,7 @@ public class ExchangeView extends VerticalLayout {
                     notification.setOpened(true);
                 }
             }
+
         });
 
 

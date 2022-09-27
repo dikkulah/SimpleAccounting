@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,9 +39,15 @@ public class AccountController {
     }
 
     @PostMapping("/{accountId}/activity")
-    public ResponseEntity<Boolean> addActivity(Authentication authentication, @RequestBody Activity activity,@PathVariable UUID accountId) {
-        log.info(activity.toString() +  accountId);
-        return ResponseEntity.ok().body(accountService.addActivity(authentication.getName(), activity,accountId));
+    public ResponseEntity<Boolean> addActivity(Authentication authentication, @RequestBody Activity activity, @PathVariable UUID accountId) {
+        log.info(activity.toString() + accountId);
+        return ResponseEntity.ok().body(accountService.addActivity(authentication.getName(), activity, accountId));
+    }
+
+    @GetMapping("/balance/{accountId}/{amount}")
+    public ResponseEntity<Boolean> addActivity(Authentication authentication, @PathVariable UUID accountId, @PathVariable BigDecimal amount) {
+        log.info("1111111");
+        return ResponseEntity.ok().body(accountService.checkBalance(authentication.getName(), amount, accountId));
     }
 
 
