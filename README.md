@@ -5,6 +5,7 @@ Ft Teknoloji Practium Case
 ```maven
 mvn clean package
 ```
+- Swagger configure kalan zaman nedeniyle edilemedi. 
 - Veritabanlıarını ayağa kaldırma
 - ufuk 123456 hazır kullanıcı - içerisinde işlemler mevcut
 - mehmet 123456 hazır kullanıcı
